@@ -107,9 +107,20 @@ function Quat.dot(a,b)
 	return a[1] * b[1] + a[2] * b[2] + a[3] * b[3] + a[4] * b[4]
 end
 
+function Quat:rotate(v)
+	return vec3(unpack(self * Quat(v[1], v[2], v[3], 0) * self:conjugate()))
+end
+
 function Quat:length()
 	local lenSq = self:dot(self)
 	return math.sqrt(lenSq)
+end
+
+-- when using conj for quaternion orientations, you can get by just negative'ing the w
+-- ... since q == inv(q)
+-- makes a difference when you are using this for 3D rotations
+function Quat:conjugate()
+	return Quat(-self[1], -self[2], -self[3], self[4])
 end
 
 -- in-place
