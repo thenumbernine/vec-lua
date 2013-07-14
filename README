@@ -1,0 +1,3 @@
+vector math library in Lua
+uses Lua AST http://github.com/thenumbernine/ast-lua for building vector classes of arbitrary sizes
+
