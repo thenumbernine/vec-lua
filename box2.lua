@@ -42,6 +42,8 @@ function box2.set(dst,a,b,c,d)
 		dst.min:set(a,a)
 		dst.max:set(b,b)
 	else
+		-- technically we shouldn't get here ... since it's handled by the first condition
+		error("don't know how to initialize")
 		dst.min:set(tonumber(a) or 0, tonumber(b) or 0)
 		dst.max:set(tonumber(c) or 0, tonumber(d) or 0)
 	end
@@ -69,17 +71,26 @@ function box2.contains(a,b)
 			a.max[2] > b[2]
 end
 
+function box2.containsE(a,b)
+	return	a.min[1] <= b[1] and
+			a.min[2] <= b[2] and
+			a.max[1] >= b[1] and
+			a.max[2] >= b[2]
+end
+
+
 function box2:clamp(b)
 	for i=1,2 do
 		if self.min[i] < b.min[i] then self.min[i] = b.min[i] end
 		if self.max[i] > b.max[i] then self.max[i] = b.max[i] end
 	end
+	return self
 end
 	
 function box2.map(a,b) a.min:map(b) a.max:map(b) return a end
 	
--- add concat
 function box2.__tostring(b) return '[' .. b.min .. ', ' .. b.max .. ']' end
+function box2.__concat(a,b) return tostring(a) .. tostring(b) end
 
 function box2.__add(a,b)
 	local bmin, bmax = b, b
