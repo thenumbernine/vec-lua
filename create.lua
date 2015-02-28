@@ -37,7 +37,7 @@ function createVectorClass(dim)
 			, 0)} ))
 		end
 		c.func__set = ast._function(
-			classname..'.set',
+			ast._index(ast._var(classname), ast._string'set'),
 			args,
 			unpack(stmts)	
 		)
@@ -61,10 +61,10 @@ function createVectorClass(dim)
 			))
 		end
 		c['func__'..name] = ast._function(
-			classname..'.'..name,
+			ast._index(ast._var(classname), ast._string(name)),
 			{ast._arg(), ast._arg()},
 			ast._return(
-				ast._call(classname,
+				ast._call(ast._var(classname),
 					unpack(exprs)
 		)))
 		ast.exec(c['func__'..name])()
@@ -79,10 +79,10 @@ function createVectorClass(dim)
 			))
 		end
 		c.func__negative = ast._function(
-			classname..'.negative',
+			ast._index(ast._var(classname), ast._string'negative'),
 			{ast._arg()},
 			ast._return(
-				ast._call(classname,
+				ast._call(ast._var(classname),
 					unpack(exprs)
 		)))
 		ast.exec(c.func__negative)()
@@ -99,10 +99,10 @@ function createVectorClass(dim)
 			))
 		end
 		return ast._function(
-			classname..'.'..name,
+			ast._index(ast._var(classname), ast._string(name)),
 			{ast._arg(),ast._arg()},
 			ast._return(
-				ast._call(classname, 
+				ast._call(ast._var(classname),
 					unpack(exprs)
 		)))
 	end
@@ -125,7 +125,7 @@ function createVectorClass(dim)
 			))
 		end
 		c.func__equals = ast._function(
-			classname..'.equals',
+			ast._index(ast._var(classname), ast._string'equals'),
 			{ast._arg(), ast._arg()},
 			ast._return(
 				ast._and(unpack(exprs))
@@ -144,7 +144,7 @@ function createVectorClass(dim)
 			))
 		end
 		c.func__dot = ast._function(
-			classname..'.dot',
+			ast._index(ast._var(classname), ast._string'dot'),
 			{ast._arg(), ast._arg()},
 			ast._return(
 				ast._add(unpack(exprs))
@@ -170,13 +170,13 @@ function createVectorClass(dim)
 	-- inlining...
 	c.func__length = ast.flatten(
 		ast._function(
-			classname..'.length',
+			ast._index(ast._var(classname), ast._string'length'),
 			{ast._arg()},
 			ast._return(
 				ast._call(
-					'math.sqrt',
+					ast._index(ast._var'math', ast._string'sqrt'),
 					ast._call(
-						classname..'.lenSq',
+						ast._index(ast._var(classname), ast._string'lenSq'),
 						ast._arg(1)
 		)	)	)	),
 		{
@@ -187,7 +187,7 @@ function createVectorClass(dim)
 
 	c.func__normalize = ast.flatten(
 		ast._function(
-			classname..'.normalize',
+			ast._index(ast._var(classname), ast._string'normalize'),
 			{ast._arg()},
 			ast._return(
 				ast._mul(
@@ -195,7 +195,7 @@ function createVectorClass(dim)
 					ast._par(
 						ast._div(
 							1, ast._call(
-								classname..'.length', ast._arg(1)
+								ast._index(ast._var(classname), ast._string'length'), ast._arg(1)
 		)	)	)	)	)	),
 		{
 			[classname..'.length'] = c.func__length
@@ -212,7 +212,7 @@ function createVectorClass(dim)
 			table.insert(exprs, ast._index(ast._arg(1), i))
 		end
 		c.func__tostring = ast._function(
-			classname..'.tostring',
+			ast._index(ast._var(classname), ast._string'tostring'),
 			{ast._arg()},
 			ast._return(
 				ast._concat(unpack(exprs))
