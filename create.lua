@@ -1,6 +1,6 @@
-require 'ast'
 require 'ext.table'
 local class = require 'ext.class'
+local ast = require 'ast'
 
 function createVectorClass(dim)
 	local classname = 'vec'..dim
@@ -31,10 +31,10 @@ function createVectorClass(dim)
 		end
 		local stmts = table()
 		for i=1,dim do
-			stmts:insert(ast._assign( ast._index( args[1], i ), ast._or(
+			stmts:insert(ast._assign( {ast._index( args[1], i )}, {ast._or(
 				--ast._call('tonumber', ast._arg(i+1))
 				ast._arg(i+1)
-			, 0) ))
+			, 0)} ))
 		end
 		c.func__set = ast._function(
 			classname..'.set',

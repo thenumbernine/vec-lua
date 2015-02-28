@@ -32,6 +32,36 @@ function Quat.mul(q, r, res)
 end
 Quat.__mul = Quat.mul
 
+function Quat.add(a,b,res)
+	if not res then res = Quat() end
+	res[1] = a[1] + b[1]
+	res[2] = a[2] + b[2]
+	res[3] = a[3] + b[3]
+	res[4] = a[4] + b[4]
+	return res
+end
+Quat.__add = Quat.add
+
+function Quat.sub(a,b,res)
+	if not res then res = Quat() end
+	res[1] = a[1] - b[1]
+	res[2] = a[2] - b[2]
+	res[3] = a[3] - b[3]
+	res[4] = a[4] - b[4]
+	return res
+end
+Quat.__sub = Quat.sub
+
+function Quat.negate(a,res)
+	if not res then res = Quat() end
+	res[1] = -a[1]
+	res[2] = -a[2]
+	res[3] = -a[3]
+	res[4] = -a[4]
+	return res
+end
+Quat.__unm = Quat.negate
+
 -- in degrees
 function Quat:toAngleAxis(res)
 	if not res then res = {} end
