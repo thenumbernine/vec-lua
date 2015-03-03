@@ -1,6 +1,6 @@
 require 'ext.table'
 local class = require 'ext.class'
-local ast = require 'ast'
+local ast = require 'parser.ast'
 
 function createVectorClass(dim)
 	local classname = 'vec'..dim
