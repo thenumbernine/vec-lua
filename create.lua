@@ -1,4 +1,4 @@
-require 'ext.table'
+local table = require 'ext.table'
 local class = require 'ext.class'
 local ast = require 'parser.ast'
 
