@@ -39,7 +39,7 @@ function createVectorClass(dim)
 		c.func__set = ast._function(
 			ast._index(ast._var(classname), ast._string'set'),
 			args,
-			unpack(stmts)	
+			table.unpack(stmts)	
 		)
 		ast.exec(c.func__set)()
 	end
@@ -65,7 +65,7 @@ function createVectorClass(dim)
 			{ast._arg(), ast._arg()},
 			ast._return(
 				ast._call(ast._var(classname),
-					unpack(exprs)
+					table.unpack(exprs)
 		)))
 		ast.exec(c['func__'..name])()
 		c['__'..name] = c[name]
@@ -83,7 +83,7 @@ function createVectorClass(dim)
 			{ast._arg()},
 			ast._return(
 				ast._call(ast._var(classname),
-					unpack(exprs)
+					table.unpack(exprs)
 		)))
 		ast.exec(c.func__negative)()
 		c.__unm = c.negative
@@ -103,7 +103,7 @@ function createVectorClass(dim)
 			{ast._arg(),ast._arg()},
 			ast._return(
 				ast._call(ast._var(classname),
-					unpack(exprs)
+					table.unpack(exprs)
 		)))
 	end
 
@@ -128,7 +128,7 @@ function createVectorClass(dim)
 			ast._index(ast._var(classname), ast._string'equals'),
 			{ast._arg(), ast._arg()},
 			ast._return(
-				ast._and(unpack(exprs))
+				ast._and(table.unpack(exprs))
 		))
 		ast.exec(c.func__equals)()
 		c.__eq = c.equals
@@ -147,7 +147,7 @@ function createVectorClass(dim)
 			ast._index(ast._var(classname), ast._string'dot'),
 			{ast._arg(), ast._arg()},
 			ast._return(
-				ast._add(unpack(exprs))
+				ast._add(table.unpack(exprs))
 		))
 		ast.exec(c.func__dot)()
 
@@ -203,6 +203,8 @@ function createVectorClass(dim)
 	)
 	ast.exec(c.func__normalize)()
 
+	c.unpack = table.unpack
+
 	do
 		local exprs = {}
 		for i=1,dim do
@@ -215,7 +217,7 @@ function createVectorClass(dim)
 			ast._index(ast._var(classname), ast._string'tostring'),
 			{ast._arg()},
 			ast._return(
-				ast._concat(unpack(exprs))
+				ast._concat(table.unpack(exprs))
 		))
 		ast.exec(c.func__tostring)()
 		c.__tostring = c.tostring

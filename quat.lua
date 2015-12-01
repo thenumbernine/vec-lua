@@ -138,7 +138,7 @@ function Quat.dot(a,b)
 end
 
 function Quat:rotate(v)
-	return vec3(unpack(self * Quat(v[1], v[2], v[3], 0) * self:conjugate()))
+	return vec3(table.unpack(self * Quat(v[1], v[2], v[3], 0) * self:conjugate()))
 end
 
 function Quat:length()
