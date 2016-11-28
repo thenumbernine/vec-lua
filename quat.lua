@@ -1,6 +1,6 @@
 local class = require 'ext.class'
 local vec3 = require 'vec.vec3'
-require 'ext.math'	--math.clamp
+local math = require 'ext.math'	--math.clamp
 
 local Quat = class()
 
