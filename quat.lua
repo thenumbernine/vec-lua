@@ -1,6 +1,7 @@
 local class = require 'ext.class'
 local vec3 = require 'vec.vec3'
 local math = require 'ext.math'	--math.clamp
+local table = require 'ext.table'
 
 local Quat = class()
 
