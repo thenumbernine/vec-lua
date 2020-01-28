@@ -1,3 +1,6 @@
-vector math library in Lua
-uses Lua AST http://github.com/thenumbernine/ast-lua for building vector classes of arbitrary sizes
-also uses http://github.com/thenumbernine/lua-ext
+Vector math library in Lua
+
+### Dependencies:
+
+- http://github.com/thenumbernine/lua-ext
+- http://github.com/thenumbernine/ast-lua for building vector classes of arbitrary sizes
