@@ -61,7 +61,11 @@ function Quat.negate(a,res)
 	res[4] = -a[4]
 	return res
 end
-Quat.__unm = Quat.negate
+-- bad: some Lua implementations (5.3.6 as I see it) pass TWO args into __unm, both are the same object
+-- so if we forward args as-is to negate() then we get the result as the source
+--Quat.__unm = Quat.negate
+-- so instead ...
+function Quat:__unm() return self:negate() end
 
 -- in degrees
 function Quat:toAngleAxis(res)
