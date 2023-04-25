@@ -106,6 +106,16 @@ function Quat.fromAngleAxis(q, x, y, z, degrees)
 	return q
 end
 
+function Quat.vectorRotate(q, v1, v2)
+	-- TODO ffi compat, prefer v1:unpack() if available
+	v1 = vec3(table.unpack(v1)):normalize()
+	v2 = vec3(table.unpack(v2)):normalize()
+	local costh = v1:dot(v2)
+	local theta = math.acos(math.clamp(costh,-1,1))
+	local v3 = v1:cross(v2):normalize()
+	return Quat():fromAngleAxis(v3[1], v3[2], v3[3], math.deg(theta))
+end
+
 function Quat.xAxis(q, res)
 	if not res then res = vec3() end
 	res[1] = 1 - 2 * (q[2] * q[2] + q[3] * q[3])
@@ -181,4 +191,3 @@ function Quat:__tostring()
 end
 
 return Quat
-
