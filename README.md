@@ -3,7 +3,9 @@
 
 # Vector Math Library in Lua
 
+This is slowly getting taken over by my matrix library.
+
 ### Dependencies:
 
 - http://github.com/thenumbernine/lua-ext
-- http://github.com/thenumbernine/lua-parser for building vector classes of arbitrary sizes
+- http://github.com/thenumbernine/lua-parser for building vector classes of arbitrary sizes, and for storing functions as an AST for auto-inlining and Lua optimizations.
