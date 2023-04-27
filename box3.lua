@@ -86,12 +86,21 @@ function box3.containsE(a,b)
 end
 
 
+-- 'b' is a 'box3', clamps 'self' to be within 'b'
 function box3:clamp(b)
 	for i=1,3 do
 		if self.min[i] < b.min[i] then self.min[i] = b.min[i] end
 		if self.max[i] > b.max[i] then self.max[i] = b.max[i] end
 	end
 	return self
+end
+
+-- 'v' is a vec3, stretches 'self' to contain 'v'
+function box3:stretch(v)
+	for i=1,3 do
+		self.min[i] = math.min(self.min[i], v[i])
+		self.max[i] = math.max(self.max[i], v[i])
+	end
 end
 
 function box3.map(a,b) a.min:map(b) a.max:map(b) return a end

@@ -165,8 +165,6 @@ function createVectorClass(dim)
 			return n
 		end)
 		ast.exec(c.func__lenSq)()
-
-		c.normSq = c.lenSq
 	end
 
 	-- inlining...
@@ -186,9 +184,6 @@ function createVectorClass(dim)
 		}
 	)
 	ast.exec(c.func__length)()
-
-	-- Matlab/matrix compat
-	c.norm = c.length
 
 	c.func__normalize = ast.flatten(
 		ast._function(
@@ -234,6 +229,16 @@ function createVectorClass(dim)
 	end
 
 	function c.angle(v) return math.atan2(v[2], v[1]) end
+
+	-- Matlab/matrix compat
+	c.normSq = c.lenSq
+	c.norm = c.length
+
+	-- 'volume' in my math libs (in the context of a bbox difference-of-min/max vectors)
+	-- 'prod' in matlab
+	function c.volume(v)
+		return v[1] * v[2] * v[3]
+	end
 
 	return c
 end
