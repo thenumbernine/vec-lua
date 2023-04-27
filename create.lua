@@ -6,9 +6,9 @@ function createVectorClass(dim)
 	local classname = 'vec'..dim
 	local c = class()
 	_G[classname] = c
-	
+
 	c.dim = dim
-	
+
 	--[[
 	args
 		cmd = command to repeat
@@ -23,7 +23,7 @@ function createVectorClass(dim)
 		end
 		return r:concat(args.sep or ' ')
 	end
-	
+
 	do
 		local args = table{ast._arg(1)}
 		for i=1,dim do
@@ -39,7 +39,7 @@ function createVectorClass(dim)
 		c.func__set = ast._function(
 			ast._index(ast._var(classname), ast._string'set'),
 			args,
-			table.unpack(stmts)	
+			table.unpack(stmts)
 		)
 		ast.exec(c.func__set)()
 	end
@@ -54,9 +54,9 @@ function createVectorClass(dim)
 		local op = info[2]
 		local exprs = {}
 		for i=1,dim do
-			table.insert(exprs, 
+			table.insert(exprs,
 				ast['_'..name](
-					ast._index(ast._arg(1), i), 
+					ast._index(ast._arg(1), i),
 					ast._index(ast._arg(2), i)
 			))
 		end
@@ -70,7 +70,7 @@ function createVectorClass(dim)
 		ast.exec(c['func__'..name])()
 		c['__'..name] = c[name]
 	end
-	
+
 	do
 		local exprs = {}
 		for i=1,dim do
@@ -92,9 +92,9 @@ function createVectorClass(dim)
 	local function scalarop(name, op)
 		local exprs = {}
 		for i=1,dim do
-			table.insert(exprs, 
+			table.insert(exprs,
 				ast['_'..name](
-					ast._index(ast._arg(1), i), 
+					ast._index(ast._arg(1), i),
 					ast._arg(2)
 			))
 		end
@@ -110,15 +110,15 @@ function createVectorClass(dim)
 	c.func__mul = scalarop('mul', '*')
 	ast.exec(c.func__mul)()
 	c.__mul = c.mul
-	
+
 	c.func__div = scalarop('div', '*')
 	ast.exec(c.func__div)()
 	c.__div = c.div
-	
+
 	do
 		local exprs = {}
 		for i=1,dim do
-			table.insert(exprs, 
+			table.insert(exprs,
 				ast._eq(
 					ast._index(ast._arg(1), i),
 					ast._index(ast._arg(2), i)
@@ -133,7 +133,7 @@ function createVectorClass(dim)
 		ast.exec(c.func__equals)()
 		c.__eq = c.equals
 	end
-	
+
 	do
 		local exprs = {}
 		for i=1,dim do
@@ -165,6 +165,8 @@ function createVectorClass(dim)
 			return n
 		end)
 		ast.exec(c.func__lenSq)()
+
+		c.normSq = c.lenSq
 	end
 
 	-- inlining...
@@ -225,14 +227,14 @@ function createVectorClass(dim)
 		ast.exec(c.func__tostring)()
 		c.__tostring = c.tostring
 	end
-	
+
 	-- because you never know which one your object is going to be...
 	function c.__concat(a,b)
 		return tostring(a)..tostring(b)
 	end
 
 	function c.angle(v) return math.atan2(v[2], v[1]) end
-	
+
 	return c
 end
 

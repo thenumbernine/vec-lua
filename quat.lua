@@ -14,7 +14,7 @@ end
 
 function Quat.mul(q, r, res)
 	if not res then res = Quat() end
-	
+
 	local a = (q[4] + q[1]) * (r[4] + r[1])
 	local b = (q[3] - q[2]) * (r[2] - r[3])
 	local c = (q[1] - q[4]) * (r[2] + r[3])
@@ -28,7 +28,7 @@ function Quat.mul(q, r, res)
 	res[2] = -c + .5 * ( e - f + g - h)
 	res[3] = -d + .5 * ( e - f - g + h)
 	res[4] = b + .5 * (-e - f + g + h)
-	
+
 	return res
 end
 Quat.__mul = Quat.mul
@@ -88,7 +88,7 @@ function Quat:toAngleAxis(res)
 		res[3] = self[3] * scale
 		res[4] = halfangle * 360 / math.pi
 	end
-	
+
 	return res
 end
 
@@ -102,7 +102,7 @@ function Quat.fromAngleAxis(q, x, y, z, degrees)
 	q[2] = y * vscale
 	q[3] = z * vscale
 	q[4] = costh
-	
+
 	return q
 end
 
@@ -161,10 +161,18 @@ function Quat:rotate(v)
 	return vec3(table.unpack(self * Quat(v[1], v[2], v[3], 0) * self:conjugate()))
 end
 
+function Quat:lenSq()
+	return self:dot(self)
+end
+
 function Quat:length()
-	local lenSq = self:dot(self)
+	local lenSq = self:lenSq()
 	return math.sqrt(lenSq)
 end
+
+-- Matlab/matrix alias.
+Quat.normSq = Quat.lenSq
+Quat.norm = Quat.length
 
 -- when using conj for quaternion orientations, you can get by just negative'ing the w
 -- ... since q == inv(q)

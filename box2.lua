@@ -49,12 +49,12 @@ function box2.set(dst,a,b,c,d)
 	end
 	return dst
 end
-	
+
 	-- vec2 size(self)
 function box2.size(b)
 	return b.max - b.min
 end
-	
+
 	-- bool touches(box2, box2)
 function box2.touches(a,b)
 	return	a.min[1] < b.max[1] and
@@ -62,7 +62,7 @@ function box2.touches(a,b)
 			a.min[2] < b.max[2] and
 			a.max[2] > b.min[2]
 end
-	
+
 	-- bool contains(box2, vec2)
 function box2.contains(a,b)
 	return	a.min[1] < b[1] and
@@ -86,9 +86,9 @@ function box2:clamp(b)
 	end
 	return self
 end
-	
+
 function box2.map(a,b) a.min:map(b) a.max:map(b) return a end
-	
+
 function box2.__tostring(b) return '[' .. b.min .. ', ' .. b.max .. ']' end
 function box2.__concat(a,b) return tostring(a) .. tostring(b) end
 

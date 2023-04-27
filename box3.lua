@@ -50,12 +50,12 @@ function box3.set(dst,a,b,c,d)
 	end
 	return dst
 end
-	
+
 	-- vec3 size(self)
 function box3.size(b)
 	return b.max - b.min
 end
-	
+
 	-- bool touches(box3, box3)
 function box3.touches(a,b)
 	return	a.min[1] < b.max[1] and
@@ -65,7 +65,7 @@ function box3.touches(a,b)
 			a.min[3] < b.max[3] and
 			a.max[3] > b.min[3]
 end
-	
+
 	-- bool contains(box3, vec3)
 function box3.contains(a,b)
 	return	a.min[1] < b[1] and
@@ -93,9 +93,9 @@ function box3:clamp(b)
 	end
 	return self
 end
-	
+
 function box3.map(a,b) a.min:map(b) a.max:map(b) return a end
-	
+
 function box3.__tostring(b) return '[' .. b.min .. ', ' .. b.max .. ']' end
 function box3.__concat(a,b) return tostring(a) .. tostring(b) end
 
