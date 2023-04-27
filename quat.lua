@@ -111,9 +111,14 @@ function Quat.vectorRotate(q, v1, v2)
 	v1 = vec3(table.unpack(v1)):normalize()
 	v2 = vec3(table.unpack(v2)):normalize()
 	local costh = v1:dot(v2)
-	local theta = math.acos(math.clamp(costh,-1,1))
-	local v3 = v1:cross(v2):normalize()
-	return Quat():fromAngleAxis(v3[1], v3[2], v3[3], math.deg(theta))
+	local eps = 1e-9
+	if math.abs(costh) > 1 - eps then
+		return Quat()
+	else
+		local theta = math.acos(math.clamp(costh,-1,1))
+		local v3 = v1:cross(v2):normalize()
+		return Quat():fromAngleAxis(v3[1], v3[2], v3[3], math.deg(theta))
+	end
 end
 
 function Quat.xAxis(q, res)

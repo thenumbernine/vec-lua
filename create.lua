@@ -185,6 +185,9 @@ function createVectorClass(dim)
 	)
 	ast.exec(c.func__length)()
 
+	-- Matlab/matrix compat
+	c.norm = c.length
+
 	c.func__normalize = ast.flatten(
 		ast._function(
 			ast._index(ast._var(classname), ast._string'normalize'),
