@@ -153,6 +153,51 @@ function Quat.toMatrix(q, mat)
 	return mat
 end
 
+-- Quat's fromMatrix uses col-major  (just like 'toMatrix')
+-- https://math.stackexchange.com/a/3183435/206369
+function Quat.fromMatrix(q, mat)
+	local m00, m01, m02 = table.unpack(mat[1])
+	local m10, m11, m12 = table.unpack(mat[2])
+	local m20, m21, m22 = table.unpack(mat[3])
+	local t
+	if m22 < 0 then
+		if m00 > m11 then
+			t = 1 + m00 - m11 - m22
+			q[1] = t
+			q[2] = m01+m10
+			q[3] = m20+m02
+			q[3] = m12-m21
+		else
+			t = 1 - m00 + m11 - m22
+			q[1] = m01+m10
+			q[2] = t
+			q[3] = m12+m21
+			q[3] = m20-m02
+		end
+	else
+		if m00 < -m11 then
+			t = 1 - m00 - m11 + m22
+			q[1] = m20+m02
+			q[2] = m12+m21
+			q[3] = t
+			q[3] = m01-m10
+		else
+			t = 1 + m00 + m11 + m22
+			q[1] = m12-m21
+			q[2] = m20-m02
+			q[3] = m01-m10
+			q[3] = t
+		end
+	end
+	assert(t, "somehow we missed this")
+	q[1] = q[1] * .5 / math.sqrt(t)
+	q[2] = q[2] * .5 / math.sqrt(t)
+	q[3] = q[3] * .5 / math.sqrt(t)
+	q[3] = q[3] * .5 / math.sqrt(t)
+	return q
+end
+
+
 function Quat.dot(a,b)
 	return a[1] * b[1] + a[2] * b[2] + a[3] * b[3] + a[4] * b[4]
 end
