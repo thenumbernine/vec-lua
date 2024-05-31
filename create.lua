@@ -31,10 +31,10 @@ function createVectorClass(dim)
 		end
 		local stmts = table()
 		for i=1,dim do
-			stmts:insert(ast._assign( {ast._index( args[1], i )}, {ast._or(
+			stmts:insert(ast._assign( {ast._index( args[1], ast._number(i) )}, {ast._or(
 				--ast._call('tonumber', ast._arg(i+1))
 				ast._arg(i+1)
-			, 0)} ))
+			, ast._number(0))} ))
 		end
 		c.func__set = ast._function(
 			ast._index(ast._var(classname), ast._string'set'),
@@ -56,8 +56,8 @@ function createVectorClass(dim)
 		for i=1,dim do
 			table.insert(exprs,
 				ast['_'..name](
-					ast._index(ast._arg(1), i),
-					ast._index(ast._arg(2), i)
+					ast._index(ast._arg(1), ast._number(i)),
+					ast._index(ast._arg(2), ast._number(i))
 			))
 		end
 		c['func__'..name] = ast._function(
@@ -75,7 +75,7 @@ function createVectorClass(dim)
 		local exprs = {}
 		for i=1,dim do
 			table.insert(exprs, ast._unm(
-				ast._index(ast._arg(1), i)
+				ast._index(ast._arg(1), ast._number(i))
 			))
 		end
 		c.func__negative = ast._function(
@@ -94,7 +94,7 @@ function createVectorClass(dim)
 		for i=1,dim do
 			table.insert(exprs,
 				ast['_'..name](
-					ast._index(ast._arg(1), i),
+					ast._index(ast._arg(1), ast._number(i)),
 					ast._arg(2)
 			))
 		end
@@ -120,8 +120,8 @@ function createVectorClass(dim)
 		for i=1,dim do
 			table.insert(exprs,
 				ast._eq(
-					ast._index(ast._arg(1), i),
-					ast._index(ast._arg(2), i)
+					ast._index(ast._arg(1), ast._number(i)),
+					ast._index(ast._arg(2), ast._number(i))
 			))
 		end
 		c.func__equals = ast._function(
@@ -139,8 +139,8 @@ function createVectorClass(dim)
 		for i=1,dim do
 			table.insert(exprs,
 				ast._mul(
-					ast._index(ast._arg(1), i),
-					ast._index(ast._arg(2), i)
+					ast._index(ast._arg(1), ast._number(i)),
+					ast._index(ast._arg(2), ast._number(i))
 			))
 		end
 		c.func__dot = ast._function(
@@ -153,7 +153,7 @@ function createVectorClass(dim)
 
 		-- replace dot's 2 args with 1...
 		c.func__lenSq = ast.copy(c.func__dot)
-		c.func__lenSq.name = classname..'.lenSq'
+		c.func__lenSq.name = ast._index(ast._var(classname), ast._string'lenSq')
 		ast.traverse(c.func__lenSq, function(n)
 			if type(n) == 'table' then
 				if n.type == 'arg' then
@@ -194,7 +194,7 @@ function createVectorClass(dim)
 					ast._arg(1),
 					ast._par(
 						ast._div(
-							1, ast._call(
+							ast._number(1), ast._call(
 								ast._index(ast._var(classname), ast._string'length'), ast._arg(1)
 		)	)	)	)	)	),
 		{
@@ -211,7 +211,7 @@ function createVectorClass(dim)
 			if i > 1 then
 				table.insert(exprs, ast._string(', '))
 			end
-			table.insert(exprs, ast._index(ast._arg(1), i))
+			table.insert(exprs, ast._index(ast._arg(1), ast._number(i)))
 		end
 		c.func__tostring = ast._function(
 			ast._index(ast._var(classname), ast._string'tostring'),
