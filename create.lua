@@ -39,7 +39,7 @@ function createVectorClass(dim)
 		c.func__set = ast._function(
 			ast._index(ast._var(classname), ast._string'set'),
 			args,
-			table.unpack(stmts)
+			stmts:unpack()
 		)
 		ast.exec(c.func__set)()
 	end
@@ -52,9 +52,9 @@ function createVectorClass(dim)
 	} do
 		local name = info[1]
 		local op = info[2]
-		local exprs = {}
+		local exprs = table()
 		for i=1,dim do
-			table.insert(exprs,
+			exprs:insert(
 				ast['_'..name](
 					ast._index(ast._arg(1), ast._number(i)),
 					ast._index(ast._arg(2), ast._number(i))
@@ -65,16 +65,16 @@ function createVectorClass(dim)
 			{ast._arg(), ast._arg()},
 			ast._return(
 				ast._call(ast._var(classname),
-					table.unpack(exprs)
+					exprs:unpack()
 		)))
 		ast.exec(c['func__'..name])()
 		c['__'..name] = c[name]
 	end
 
 	do
-		local exprs = {}
+		local exprs = table()
 		for i=1,dim do
-			table.insert(exprs, ast._unm(
+			exprs:insert(ast._unm(
 				ast._index(ast._arg(1), ast._number(i))
 			))
 		end
@@ -83,16 +83,16 @@ function createVectorClass(dim)
 			{ast._arg()},
 			ast._return(
 				ast._call(ast._var(classname),
-					table.unpack(exprs)
+					exprs:unpack()
 		)))
 		ast.exec(c.func__negative)()
 		c.__unm = c.negative
 	end
 
 	local function scalarop(name, op)
-		local exprs = {}
+		local exprs = table()
 		for i=1,dim do
-			table.insert(exprs,
+			exprs:insert(
 				ast['_'..name](
 					ast._index(ast._arg(1), ast._number(i)),
 					ast._arg(2)
@@ -103,7 +103,7 @@ function createVectorClass(dim)
 			{ast._arg(),ast._arg()},
 			ast._return(
 				ast._call(ast._var(classname),
-					table.unpack(exprs)
+					exprs:unpack()
 		)))
 	end
 
@@ -116,9 +116,9 @@ function createVectorClass(dim)
 	c.__div = c.div
 
 	do
-		local exprs = {}
+		local exprs = table()
 		for i=1,dim do
-			table.insert(exprs,
+			exprs:insert(
 				ast._eq(
 					ast._index(ast._arg(1), ast._number(i)),
 					ast._index(ast._arg(2), ast._number(i))
@@ -128,16 +128,16 @@ function createVectorClass(dim)
 			ast._index(ast._var(classname), ast._string'equals'),
 			{ast._arg(), ast._arg()},
 			ast._return(
-				ast._and(table.unpack(exprs))
+				ast._and(exprs:unpack())
 		))
 		ast.exec(c.func__equals)()
 		c.__eq = c.equals
 	end
 
 	do
-		local exprs = {}
+		local exprs = table()
 		for i=1,dim do
-			table.insert(exprs,
+			exprs:insert(
 				ast._mul(
 					ast._index(ast._arg(1), ast._number(i)),
 					ast._index(ast._arg(2), ast._number(i))
@@ -147,7 +147,7 @@ function createVectorClass(dim)
 			ast._index(ast._var(classname), ast._string'dot'),
 			{ast._arg(), ast._arg()},
 			ast._return(
-				ast._add(table.unpack(exprs))
+				ast._add(exprs:unpack())
 		))
 		ast.exec(c.func__dot)()
 
@@ -206,18 +206,18 @@ function createVectorClass(dim)
 	c.unpack = table.unpack
 
 	do
-		local exprs = {}
+		local exprs = table()
 		for i=1,dim do
 			if i > 1 then
-				table.insert(exprs, ast._string(', '))
+				exprs:insert(ast._string(', '))
 			end
-			table.insert(exprs, ast._index(ast._arg(1), ast._number(i)))
+			exprs:insert(ast._index(ast._arg(1), ast._number(i)))
 		end
 		c.func__tostring = ast._function(
 			ast._index(ast._var(classname), ast._string'tostring'),
 			{ast._arg()},
 			ast._return(
-				ast._concat(table.unpack(exprs))
+				ast._concat(exprs:unpack())
 		))
 		ast.exec(c.func__tostring)()
 		c.__tostring = c.tostring
