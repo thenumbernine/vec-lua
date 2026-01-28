@@ -1,15 +1,20 @@
+--------------------------------------------
+-- generated with dist/build-distinfo.rua --
+--------------------------------------------
+
 name = "vec"
 files = {
-	["README.md"] = "vec/README.md",
-	["box2.lua"] = "vec/box2.lua",
-	["box3.lua"] = "vec/box3.lua",
-	["create.lua"] = "vec/create.lua",
-	["quat.lua"] = "vec/quat.lua",
-	["vec-dev-1.rockspec"] = "vec/vec-dev-1.rockspec",
-	["vec.lua"] = "vec/vec.lua",
-	["vec2.lua"] = "vec/vec2.lua",
-	["vec3.lua"] = "vec/vec3.lua",
-	["vec4.lua"] = "vec/vec4.lua",
+	"README.md",
+	"box2.lua",
+	"box3.lua",
+	"create.lua",
+	"distinfo",
+	"quat.lua",
+	"vec-dev-1.rockspec",
+	"vec.lua",
+	"vec2.lua",
+	"vec3.lua",
+	"vec4.lua",
 }
 deps = {
 	"ext",
